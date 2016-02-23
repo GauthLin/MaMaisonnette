@@ -1,10 +1,3 @@
-#!/usr/bin/python
-
-###########################################################
-## Programme principale
-## 03/02/16 - Linard Gauthier - DIDOUH Mohamed - KADRI Ali
-###########################################################
-
 import param
 import socket
 import RPi.GPIO as GPIO
@@ -31,10 +24,10 @@ class MyHouse:
 		return False
 	
 	# Allume ou eteint le chauffage
-	# numChauf : nom du chauffage
+	# nameHeating : nom du chauffage
 	# status : True ou False
 	def heat(self, nameHeating, status):
-		GPIO.output(param.Heating[numHeating], status)
+		GPIO.output(param.Heating[nameHeating], status)
 
 	# Allume ou eteint la lampe
 	# status : True ou False
@@ -51,7 +44,7 @@ class MyHouse:
 		return GPIO.input(param.Sensors['Windows'][name])
 		
 	# Retourne True ou False si porte Ferme ou Ouvert
-	def getDoor(self, name)
+	def getDoor(self, name):
 		return GPIO.input(param.Sensors['Doors'][name])
 
 MyHouse = MyHouse()
