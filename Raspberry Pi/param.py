@@ -30,7 +30,7 @@ Sensors = dict(
 Lamp = None
 
 Heating = dict(
-	B = None,
+	B = 24,
 	C = None,
 	D = None
 )

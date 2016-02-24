@@ -1,13 +1,7 @@
-#!/usr/bin/python
-
-###########################################################
-## Programme principale
-## 03/02/16 - Linard Gauthier - DIDOUH Mohamed - KADRI Ali
-###########################################################
-
 import param
 import socket
 import RPi.GPIO as GPIO
+GPIO.setmode(GPIO.BCM)
 
 class MyHouse:
 	# Constructeur
@@ -22,6 +16,7 @@ class MyHouse:
 	## Retourne True si internet est activee
 	## Retourne False si non
 	def isInternetOn(self):
+		print("YES")
 		try:
 			host = socket.gethostbyname("www.google.com")
 			s = socket.create_connection((host, 80), 2)
@@ -29,12 +24,12 @@ class MyHouse:
 		except:
 			pass
 		return False
-	
-	# Allume ou eteint le chauffage
-	# numChauf : nom du chauffage
+# Allume ou eteint le chauffage
+	# nameHeating : nom du chauffage
 	# status : True ou False
 	def heat(self, nameHeating, status):
-		GPIO.output(param.Heating[numHeating], status)
+		GPIO.setup(param.Heating['B'], GPIO.OUT)
+		GPIO.output(param.Heating[nameHeating], status)
 
 	# Allume ou eteint la lampe
 	# status : True ou False
@@ -51,7 +46,7 @@ class MyHouse:
 		return GPIO.input(param.Sensors['Windows'][name])
 		
 	# Retourne True ou False si porte Ferme ou Ouvert
-	def getDoor(self, name)
+	def getDoor(self, name):
 		return GPIO.input(param.Sensors['Doors'][name])
 
 MyHouse = MyHouse()
