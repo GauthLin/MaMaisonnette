@@ -1,0 +1,95 @@
+body{ 
+
+ font-family: 'Arial', Verdana, Lucida Grande, Sans-Serif; 
+ color: #333; 
+ background-color : #FFF7EE; 
+ text-align: left; 
+ font-size: 13px; 
+ margin: 0; 
+ margin-top: 0px; 
+ padding: 0;
+ text-align: center;
+
+
+} 
+
+#header
+{
+
+    height: 55px;	/*Largeur de la bande*/
+    background: #9E8479; /*Couleur de la bande*/
+    text-align: left;
+}
+
+h2{
+	font-family: sans-serif; /*Police du texte*/
+	font-weight: 100;		 /*Epaisseur du texte*/
+	font-variant: small-caps; /*Petites maj*/
+	font-size: 40px;		  /*Taille du texte*/
+	margin-top: 15px;
+	color: white;
+	margin-left: 15px;
+}
+
+.FirstQuestion{
+
+	font-family: sans-serif; /*Police du texte*/
+	font-weight: 100;		 /*Epaisseur du texte*/
+	font-size: 30px;		  /*Taille du texte*/
+	margin-top: 40px;
+	text-align: center;
+}
+
+/*.Chambre1{
+	margin-top: 15px;
+	margin-left: 200px;
+}
+
+.Chambre2{
+	margin-top: 15px;
+	margin-left: 750px;
+}
+
+.Salon{
+	margin-top: 300px;
+	margin-left: 200px;
+}
+
+.Maison{ 
+	margin-top: 300px;
+	margin-left: 750px;
+}
+*/
+
+.Piece{
+	position: relative;
+	width: 40%;
+	display: inline-block;
+	margin-bottom: 60px;
+	margin-top: 20px;
+	
+}
+
+@media all and (max-width: 800px) {
+	.Piece {
+	width: 100%;	
+	}
+}
+
+.Piece > p {
+	font-size: 35px;
+	/* Coutour de texte noir de 1px */
+	text-shadow: #000000 1px 1px, #000000 -1px 1px, #000000 -1px -1px, #000000 1px -1px;
+	transform: rotate(-45deg);
+	position: absolute;
+	z-index: 10;              /* Placer le texte au premier plan*/
+	font-family: sans-serif; /*Police du texte*/
+	font-weight: 150;		 /*Epaisseur du texte*/
+	font-variant: small-caps; /*Petites maj*/
+	color: white;
+	left :50px;
+	top:-10px;
+
+}
+
+
