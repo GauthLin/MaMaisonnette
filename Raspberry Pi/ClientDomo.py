@@ -1,10 +1,10 @@
 #!/usr/bin/env python
-# coding: utf-8
+# -*- coding: utf-8 -*-
 
 import socket
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.connect(("192.168.1.10", 1111))
+s.connect(("172.17.10.60", 1111))
 
 print("Introduisez la commande a executer:")
 command = input(">> ") # utilisez raw_input() pour les anciennes versions python
