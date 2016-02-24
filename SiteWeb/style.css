@@ -1,21 +1,15 @@
-body{ 
-
+body{
  font-family: 'Arial', Verdana, Lucida Grande, Sans-Serif; 
  color: #333; 
- background-color : #FFF7EE; 
- text-align: left; 
+ background-color : #FFF7EE;
  font-size: 13px; 
- margin: 0; 
- margin-top: 0px; 
+ margin: 0;
  padding: 0;
  text-align: center;
-
-
 } 
 
 #header
 {
-
     height: 55px;	/*Largeur de la bande*/
     background: #9E8479; /*Couleur de la bande*/
     text-align: left;
