@@ -18,7 +18,7 @@ function sendCommandToRPi($command) {
 	}
 
 	//Send the message to the server
-	if( ! socket_send ( $sock , $command , strlen($message) , 0))
+	if( ! socket_send ( $sock , $command , strlen($command) , 0))
 	{
 	    $errorcode = socket_last_error();
 	    $errormsg = socket_strerror($errorcode);
