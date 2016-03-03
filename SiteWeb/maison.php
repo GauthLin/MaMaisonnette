@@ -8,3 +8,9 @@
     <body>
 
         <?php include("header.php"); ?>
+
+        <p class="Controler">
+            <?php echo "Contrôle de toutes les pièces"; ?>
+        </p>
+
+        <?php include("controler.php"); ?>
