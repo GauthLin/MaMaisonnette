@@ -73,4 +73,45 @@ h2{
 	top: -10px;
 }
 
+.Controler{
+
+	font-family: sans-serif; /*Police du texte*/
+
+	font-weight: 300;		 /*Epaisseur du texte*/
+	color: #9E8479;
+	font-size: 30px;		  /*Taille du texte*/
+	margin-top: 40px;
+	text-align: center;
+	border: 0.5px solid #9E8479; 
+	padding: 10px; 
+	background-color: white; 
+	margin-left: 400px;
+	margin-right: 400px;
+	border-radius: 10px;
+
+}
+
+li{
+
+ font-family: Courier New, monospace ;
+ font-size: 25px;
+ color: LightSlateGray;
+ text-align: left;
+ margin-top: 20px;
+ text-decoration: underline;
+
+} 
+
+.Value, .Answer{
+
+ font-family: Courier New, monospace ;
+ font-size: 25px;
+ color: #383838 ;
+ text-align: left;
+ margin-top: 40x;
+ margin-bottom: 50px;
+ margin-left: 10px;
+
+
+}
 
