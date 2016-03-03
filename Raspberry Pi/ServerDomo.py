@@ -45,8 +45,6 @@ class ClientThread(threading.Thread):
             value = r.split(" ")[2]
             self.myHouse.setMode(room, value)
 
-
-
         # print("Commander le chauffage: %s", nameHeating, " Status : %s", status)
         print("Client déconnecté...")
 

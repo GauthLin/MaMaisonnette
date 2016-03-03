@@ -1,11 +1,9 @@
 #!/usr/bin/python
-# -*- Coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 import param
 import socket
 import RPi.GPIO as GPIO
-
-GPIO.setmode(GPIO.BCM)
 
 
 class MyHouse:
@@ -25,13 +23,26 @@ class MyHouse:
             'C': 'AUTO'
         }
 
-    # Initialisation de toutes les variables
-    def setup(self):
-        pass
+        self.setup_gpio(param.GPIO)
+
+    # GPIO configuration
+    def setup_gpio(self, array):
+        GPIO.setmode(GPIO.BCM)
+
+        # v[0] contains the key
+        # v[1] contains the value
+        for v in array.items():
+            if isinstance(v[1], dict):
+                self.setup_gpio(v[1])
+            else:
+                if v[1][0].upper() == "IN":
+                    GPIO.setup(v[1][1], GPIO.IN)
+                else:
+                    GPIO.setup(v[1][1], GPIO.OUT)
 
     # Test si la connexion est activee
-    ## Retourne True si internet est activee
-    ## Retourne False si non
+    # Retourne True si internet est activee
+    # Retourne False si non
     def isInternetOn(self):
         try:
             host = socket.gethostbyname("www.google.com")
@@ -72,5 +83,5 @@ class MyHouse:
     def getDoor(self, name):
         return GPIO.input(param.Sensors['Doors'][name])
 
-
-MyHouse = MyHouse()
+if __name__ == '__main__':
+    MyHouse = MyHouse()
