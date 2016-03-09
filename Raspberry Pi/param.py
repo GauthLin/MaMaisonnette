@@ -18,10 +18,8 @@ GPIO = {
         'BD': ('out', 8)
     },
     'Windows': {
-        'B': {
-            'Gauche': ('out', 9),
-            'Droite': ('out', 10)
-        },
+        'BG':('out', 9),
+        'BD': ('out', 10),
         'C': ('out', 11),
         'D': ('out', 12)
     },

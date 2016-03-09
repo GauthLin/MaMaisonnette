@@ -64,10 +64,17 @@ class MyHouse:
     def setLamp(self, status):
         GPIO.output(param.Lamp, status)
 
-    # Todo : convertir la tension en degre celsius
-    # Retourne la temperature d une piece
+    # Retourne la temperature d'une pièce
     def getTemp(self, name):
-        return GPIO.input(param.Sensors['Temp'][name])
+        room = r[1]
+        list_room = {
+            'A': 1,
+            'B': 2,
+            'C': 3,
+            'D': 4
+        }
+        temp = round(self.adc.read_voltage(list_room[room]) / .01, 2)
+        return temp
 
     def setTemp(self, room, temp):
         self.requestTemp[room] = temp
