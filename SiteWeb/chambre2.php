@@ -7,46 +7,33 @@
     </head>
     <body>
 
-        <?php include("header.php"); ?>
+        <?php 	include("header.php");
+				include("functions.php");
+			$ID_CHB = 2; 
 
-        <p class="Controler">
-            <?php echo "Contrôle de la chambre d'amis"; ?>
-        </p>
-
-        <?php include("controler.php"); ?>
-
-        <!-- 
-
-			include("functions.php");
-			if (isset ($_POST ["temp_chamb1"])){
-			$temp_1 = $_POST ["temp_chamb1"];
-			$temp_2 = $_POST ["temp_chamb2"];
-			$temp_3 = $_POST ["temp_chamb3"];
 			
-			if (!sendCommandToRPi ("SET_TEMP A ". $temp_1)){
-			echo "connect failed";
-			}
+		// fonction d'envoie des températures ...
+/*		if (isset ($_POST ["temp_chamb1"])){
+
+			$temp_2 = $_POST ["temp_chamb2"];
+			
 			if (!sendCommandToRPi ("SET_TEMP B ". $temp_2)){
 				echo "connect failed";
 			}
-			if (!sendCommandToRPi ("SET_TEMP C ". $temp_3)){
+			if (!sendCommandToRPi ("SET_MODE ". $_POST['Mode']." B")){
 				echo "connect failed";
 			}
-			if (!sendCommandToRPi ("SET_MODE ". $_POST['Mode']." A")){
-				echo "connect failed";
-			}
-		}
+		}*/
 		// reception des température de la maison
-		$temp_1_RPI= getinfoToRPi("GET_TEMP A");
+
 		$temp_2_RPI= getinfoToRPi("GET_TEMP B");
-		$temp_3_RPI= getinfoToRPi("GET_TEMP C");
+			$temp_2_RPI= 15;
 		
 		// reception des fenetre et porte de la maison 
 		
-		echo '<form action="chambre2.php" method="post">
-		<label for="Temp_1">Température chambre 1: </label><input type="number" value="' . $temp_1_RPI . '" min="15" name="temp_chamb1"><br>
+/*		echo '<form action="chambre2.php" method="post">
+		
 		<label for="Temp_2">Température chambre 2: </label><input type="number" value="' . $temp_2_RPI . '" min="15" name="temp_chamb2"><br>
-		<label for="Temp_2">Température chambre 3: </label><input type="number" value="' . $temp_3_RPI . '" min="15" name="temp_chamb3"><br>
 		<label for="mode"> Mode de fonctionnement
 		<select name="Mode">
 		';
@@ -78,9 +65,20 @@
 		echo'
 		</select>
 		<br>
-		<input type="submit" value= "ok">
+		<input type="submit" value= "ok" >
+		
 		</form>
 		';
-		?>
+		}
+		}
+		*/?>
+		
 	
--->
+		<!-- BENJA -->
+        <?php include("header.php"); ?>
+
+        <p class="Controler">
+            <?php echo "Contrôle de la chambre d'amis"; ?>
+        </p>
+
+        <?php include("controler.php"); ?>

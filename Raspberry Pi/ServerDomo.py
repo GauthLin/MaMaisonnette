@@ -3,9 +3,10 @@
 
 import socket
 import threading
-import main
 import RPi.GPIO as GPIO
+
 import param
+from myHouse import *
 from ADCPi.ABE_ADCPi import ADCPi
 from ADCPi.ABE_helpers import ABEHelpers
 
@@ -16,13 +17,12 @@ class ClientThread(threading.Thread):
         self.ip = ip
         self.port = port
         self.clientsocket = clientsocket
-        
+
         self.adc = adc
-        self.myHouse = main.MyHouse()
+        self.myHouse = MyHouse()
         print("[+] Nouveau thread pour %s %s" % (self.ip, self.port,))
 
-
-	#self.start()
+    # self.start()
 
     # Fonction principale
     def run(self):
@@ -31,7 +31,7 @@ class ClientThread(threading.Thread):
         r = self.clientsocket.recv(2048).upper().decode("utf-8")
         r = r.split(" ")
         print("Execution de : ", r, "...")
-       
+
         if r[0] == "INTERNET":
             print(self.myHouse.isInternetOn())
 
@@ -69,10 +69,9 @@ class ClientThread(threading.Thread):
         # Command: GET_TEMP [room]
         elif r[0] == "GET_TEMP":
             room = r[1]
-            #temp = self.myHouse.getTemp(self.adc, param.GPIO['Temp'][room])
+            # temp = self.myHouse.getTemp(self.adc, param.GPIO['Temp'][room])
             self.clientsocket.send(bytes(str(18), 'UTF-8'))
             self.clientsocket.close()
-            print("get temp")
 
         # print("Commander le chauffage: %s", nameHeating, " Status : %s", status)
         print("Client déconnecté...")
