@@ -19,7 +19,9 @@
         <?php echo "T° : "; ?>	  <input type="text" id="setTemp">
         <?php echo "Du : "; ?>    <input type="text" id="datepicker">
         <?php echo "Au : "; ?>    <input type="text" id="datepicker2">
+        <input type="submit" name="Bouton" value="Appliquer" class="Btn"/>
     </p>
+
 
    <script type="text/javascript">
    $(function() {
@@ -40,5 +42,6 @@
       });
    });
    </script>
+
 </ul>
 

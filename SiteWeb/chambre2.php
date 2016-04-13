@@ -7,9 +7,18 @@
     </head>
     <body>
 
-        <?php 	include("header.php");
-				include("functions.php");
-		if (isset ($_POST ["temp_chamb1"])){
+        <?php include("header.php"); ?>
+
+        <p class="Controler">
+            <?php echo "Contrôle de la chambre d'amis"; ?>
+        </p>
+
+        <?php include("controler.php"); ?>
+
+        <!-- 
+
+			include("functions.php");
+			if (isset ($_POST ["temp_chamb1"])){
 			$temp_1 = $_POST ["temp_chamb1"];
 			$temp_2 = $_POST ["temp_chamb2"];
 			$temp_3 = $_POST ["temp_chamb3"];
@@ -74,11 +83,4 @@
 		';
 		?>
 	
-		<!-- BENJA -->
-        <?php include("header.php"); ?>
-
-        <p class="Controler">
-            <?php echo "Contrôle de la chambre d'amis"; ?>
-        </p>
-
-        <?php include("controler.php"); ?>
+-->
