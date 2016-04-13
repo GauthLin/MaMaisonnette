@@ -18,7 +18,7 @@ GPIO = {
         'BD': ('out', 8)
     },
     'Windows': {
-        'BG':('out', 9),
+        'BG': ('out', 9),
         'BD': ('out', 10),
         'C': ('out', 11),
         'D': ('out', 12)

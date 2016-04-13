@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import param
+
 import socket
 import RPi.GPIO as GPIO
 
@@ -56,13 +57,13 @@ class MyHouse:
     # room : nom du chauffage
     # status : True ou False
     def heat(self, room, status):
-        GPIO.setup(param.Heating['B'], GPIO.OUT)
-        GPIO.output(param.Heating[room], status)
+        GPIO.setup(param.GPIO['Heating']['B'][1], GPIO.OUT)
+        GPIO.output(param.GPIO['Heating'][room][1], status)
 
     # Allume ou eteint la lampe
     # status : True ou False
     def setLamp(self, status):
-        GPIO.output(param.Lamp, status)
+        GPIO.output(param.GPIO['Lamp'][1], status)
 
     # Retourne la temperature d'une pièce
     def getTemp(self, adc, name):
@@ -72,7 +73,7 @@ class MyHouse:
             'C': 3,
             'D': 4
         }
-        temp = round(adc.read_voltage(1) / .01, 2)
+        temp = round(adc.read_voltage(list_room[name]) / .01, 2)
         return temp
 
     def setTemp(self, room, temp):
@@ -83,11 +84,11 @@ class MyHouse:
 
     # Retourne True ou False si fenetre Ferme ou Ouvert
     def getWindow(self, name):
-        return GPIO.input(param.Sensors['Windows'][name])
+        return GPIO.input(param.GPIO['Sensors']['Windows'][name][1])
 
     # Retourne True ou False si porte Ferme ou Ouvert
     def getDoor(self, name):
-        return GPIO.input(param.Sensors['Doors'][name])
+        return GPIO.input(param.GPIO['Sensors']['Doors'][name][1])
 
 if __name__ == '__main__':
     MyHouse = MyHouse()
