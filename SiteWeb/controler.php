@@ -2,8 +2,24 @@
  <li>Données actuelles</li>
 
     <p class="Answer">
-       	<?php echo "T° : "; ?> <input readonly type="text" id="getTemp">
-       	<?php echo "Fenêtre : "; ?> <input readonly type="text" id="getWindowState">
+	<?php
+	// chambre 2
+	if ($ID_CHB == 1)
+	{
+	echo 'T° :  <input readonly type="text" id="getTemp" value= "'.$temp_1_RPI.'">';
+	echo' Fenêtre :   <input readonly type="text" id="getWindowState">';
+	}
+		if ($ID_CHB == 2)
+	{
+	echo 'T° :  <input readonly type="text" id="getTemp" value= "'.$temp_2_RPI.'">';
+	echo' Fenêtre :   <input readonly type="text" id="getWindowState">';
+	}
+		if ($ID_CHB == 3)
+	{
+	echo 'T° :  <input readonly type="text" id="getTemp" value= "'.$temp_3_RPI.'">';
+	echo' Fenêtre :   <input readonly type="text" id="getWindowState">';
+	}
+	?>
     </p>
 
 
