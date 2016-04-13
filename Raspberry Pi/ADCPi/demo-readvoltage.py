@@ -24,7 +24,7 @@ Sample rate can be 12,14, 16 or 18
 
 i2c_helper = ABEHelpers()
 bus = i2c_helper.get_smbus()
-adc = ADCPi(bus, 0x68, 0x69, 12)
+adc = ADCPi(bus, 0x6c, 0x6d, 12)
 
 while (True):
 

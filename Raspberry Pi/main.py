@@ -65,15 +65,14 @@ class MyHouse:
         GPIO.output(param.Lamp, status)
 
     # Retourne la temperature d'une pièce
-    def getTemp(self, name):
-        room = r[1]
+    def getTemp(self, adc, name):
         list_room = {
             'A': 1,
             'B': 2,
             'C': 3,
             'D': 4
         }
-        temp = round(self.adc.read_voltage(list_room[room]) / .01, 2)
+        temp = round(adc.read_voltage(1) / .01, 2)
         return temp
 
     def setTemp(self, room, temp):

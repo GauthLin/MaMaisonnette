@@ -11,34 +11,27 @@ from ADCPi.ABE_helpers import ABEHelpers
 
 
 class ClientThread(threading.Thread):
-    def __init__(self, ip, port, clientsocket):
-
+    def __init__(self, ip, port, clientsocket, adc):
         threading.Thread.__init__(self)
         self.ip = ip
         self.port = port
         self.clientsocket = clientsocket
-
+        
+        self.adc = adc
         self.myHouse = main.MyHouse()
         print("[+] Nouveau thread pour %s %s" % (self.ip, self.port,))
 
-        i2c_helper = ABEHelpers()
-        bus = i2c_helper.get_smbus()
-        self.adc = ADCPi(bus, 0x68, 0x69, 12)
 
-        self.start()
+	#self.start()
 
     # Fonction principale
-    def start(self):
-        pass
-
     def run(self):
         print("Connection de %s %s" % (self.ip, self.port,))
 
         r = self.clientsocket.recv(2048).upper().decode("utf-8")
         r = r.split(" ")
         print("Execution de : ", r, "...")
-        # fp = open(r, 'rb')
-        # self.clientsocket.send(fp.read())
+       
         if r[0] == "INTERNET":
             print(self.myHouse.isInternetOn())
 
@@ -76,9 +69,10 @@ class ClientThread(threading.Thread):
         # Command: GET_TEMP [room]
         elif r[0] == "GET_TEMP":
             room = r[1]
-            temp = self.myHouse.getTemp(param.GPIO['Temp'][room])
-            self.clientsocket.send(bytes(str(temp), 'UTF-8'))
+            #temp = self.myHouse.getTemp(self.adc, param.GPIO['Temp'][room])
+            self.clientsocket.send(bytes(str(18), 'UTF-8'))
             self.clientsocket.close()
+            print("get temp")
 
         # print("Commander le chauffage: %s", nameHeating, " Status : %s", status)
         print("Client déconnecté...")
@@ -88,9 +82,13 @@ tcpsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 tcpsock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 tcpsock.bind(("", 1111))
 
+i2c_helper = ABEHelpers()
+bus = i2c_helper.get_smbus()
+adc = ADCPi(bus, 0x6d, 0x6e, 12)
+
 while True:
     tcpsock.listen(10)
     print("En écoute...")
     (clientsocket, (ip, port)) = tcpsock.accept()
-    newthread = ClientThread(ip, port, clientsocket)
+    newthread = ClientThread(ip, port, clientsocket, adc)
     newthread.start()
