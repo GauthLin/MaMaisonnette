@@ -1,7 +1,9 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+import datetime
 
 import param
+from DBManager import *
 
 import socket
 import RPi.GPIO as GPIO
@@ -11,10 +13,11 @@ class MyHouse:
     # Constructeur
     def __init__(self):
         # Température voulue dans les différentes pièces
+        # [Temp, start_datetime, end_datetime]
         self.requestTemp = {
-            'A': None,
-            'B': None,
-            'C': None
+            'A': [None, None, None],
+            'B': [None, None, None],
+            'C': [None, None, None]
         }
 
         # Mode actuel dans les différentes pièces
@@ -24,7 +27,16 @@ class MyHouse:
             'C': 'AUTO'
         }
 
+        # Température par défaut des différentes pièces
+        self.defaultTemp = {
+            'A': 18,
+            'B': 18,
+            'C': 18
+        }
+
         self.setup_gpio(param.GPIO)
+
+        self.db = DBManager()
 
     # GPIO configuration
     def setup_gpio(self, array):
@@ -76,8 +88,27 @@ class MyHouse:
         temp = round(adc.read_voltage(list_room[name]) / .01, 2)
         return temp
 
-    def setTemp(self, room, temp):
-        self.requestTemp[room] = temp
+    # Sauvegarde la température par défault de la pièce
+    def setDefaultTemp(self, room, temp):
+        self.defaultTemp[room] = temp
+
+        self.db.executeUpdate('UPDATE temp_default SET temp_default = ' + temp + ' WHERE room=' + room)
+
+    # Récupère la température par défaut d'une pièce
+    def getDefaultTemp(self, room):
+        return self.defaultTemp[room]
+
+    # Sauvegarde une consigne
+    def setOrder(self, room, temp, start_timestamp, end_timestamp):
+        start_datetime = datetime.datetime.fromtimestamp(start_timestamp)
+        end_datetime = datetime.datetime.fromtimestamp(end_timestamp)
+        request_temp = self.requestTemp[room]
+        request_temp[0] = temp
+        request_temp[1] = start_datetime
+        request_temp[2] = end_datetime
+
+        self.db.executeUpdate(
+            'INSERT INTO consigne(temp, start_order, end_order, room) VALUES (' + temp + ', ' + start_datetime + ', ' + end_datetime + ', ' + room + ')')
 
     def setMode(self, room, status):
         self.currentMode[room] = status
@@ -89,6 +120,3 @@ class MyHouse:
     # Retourne True ou False si porte Ferme ou Ouvert
     def getDoor(self, name):
         return GPIO.input(param.GPIO['Sensors']['Doors'][name][1])
-
-if __name__ == '__main__':
-    MyHouse = MyHouse()
