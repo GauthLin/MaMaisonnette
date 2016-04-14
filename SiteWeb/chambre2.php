@@ -7,9 +7,13 @@
     </head>
     <body>
 
-        <?php 	include("header.php");
-				include("functions.php");
-			$ID_CHB = 2; 
+    <!--
+        <?php 	
+        /*include("functions.php");*/
+        ?>
+				
+
+			//$ID_CHB = 2; 
 
 			
 		// fonction d'envoie des températures ...
@@ -26,8 +30,8 @@
 		}*/
 		// reception des température de la maison
 
-		$temp_2_RPI= getinfoToRPi("GET_TEMP B");
-			$temp_2_RPI= 15;
+		//$temp_2_RPI= getinfoToRPi("GET_TEMP B");
+			//$temp_2_RPI= 15;
 		
 		// reception des fenetre et porte de la maison 
 		
@@ -72,13 +76,14 @@
 		}
 		}
 		*/?>
-		
-	
-		<!-- BENJA -->
-        <?php include("header.php"); ?>
+		-->
+
+        <?php include("header.php");?> <!--En-tête-->
+        
 
         <p class="Controler">
             <?php echo "Contrôle de la chambre d'amis"; ?>
         </p>
 
-        <?php include("controler.php"); ?>
+        <?php include("controler.php");?> <!--Zones de texte et boutons-->
+        

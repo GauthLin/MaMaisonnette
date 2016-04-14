@@ -1,12 +1,20 @@
 <ul>
+
+<!--Relevé des données de la maison-->
+
  <li>Données actuelles</li>
 
+
     <p class="Answer">
+    <?php echo "T° : "; ?>    <input readonly type="text" id="getTemp">
+    <?php echo "Fenêtre : "; ?>    <input readonly type="text" id="getWindowState">
+    </p>
+  <!--
 	<?php
 	// chambre 2
-	if ($ID_CHB == 1)
+	//if ($ID_CHB == 1)
 	{
-	echo 'T° :  <input readonly type="text" id="getTemp" value= "'.$temp_1_RPI.'">';
+	echo 'T° :  <input readonly type="text" id="getTemp"; value= "'.$temp_1_RPI.'">';
 	echo' Fenêtre :   <input readonly type="text" id="getWindowState">';
 	}
 		if ($ID_CHB == 2)
@@ -20,8 +28,10 @@
 	echo' Fenêtre :   <input readonly type="text" id="getWindowState">';
 	}
 	?>
-    </p>
+    
+    -->
 
+<!--Choix des données voulues-->
 
  <li>Données voulues</li>
 
@@ -38,6 +48,7 @@
         <input type="submit" name="Bouton" value="Appliquer" class="Btn"/>
     </p>
 
+<!--Javascript pour la gestion du calendrier-->
 
    <script type="text/javascript">
    $(function() {
@@ -58,6 +69,13 @@
       });
    });
    </script>
+
+   <!--Choix d'une température par défaut-->
+   <li>Par défaut</li>
+   <p class="Value">
+        <?php echo "T° : "; ?>    <input type="number" min="0" max="30" value="18"  id="setTemp">
+        <input type="submit" name="Bouton" value="Appliquer" class="Btn"/>
+    </p>
 
 </ul>
 

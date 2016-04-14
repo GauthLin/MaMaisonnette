@@ -1,3 +1,5 @@
+<!--Gestion du salon-->
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -7,10 +9,12 @@
     </head>
     <body>
 
-        <?php include("header.php"); ?>
+        <?php include("header.php");?>
 
         <p class="Controler">
             <?php echo "Contrôle du salon"; ?>
         </p>
 
-        <?php include("controler.php"); ?>
+        <?php include("controler.php");?>
+
+       
