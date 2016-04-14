@@ -4,7 +4,7 @@
 import socket
 import threading
 import RPi.GPIO as GPIO
-
+#import MySQLdb
 import param
 from myHouse import *
 from ADCPi.ABE_ADCPi import ADCPi
@@ -20,6 +20,7 @@ class ClientThread(threading.Thread):
 
         self.adc = adc
         self.myHouse = MyHouse()
+        self.myHouse.setConsigne('A',17,1460625101,1460970701)
         print("[+] Nouveau thread pour %s %s" % (self.ip, self.port,))
 
     # self.start()
@@ -43,8 +44,16 @@ class ClientThread(threading.Thread):
         # Command: SET_TEMP [room] [value]
         elif r[0] == "SET_TEMP":
             room = r[1]
-            value = r[2]
-            self.myHouse.setTemp(room, round(value, 2))
+            value = r[2]  
+            self.myHouse.setDefaultTemp(room, round(value, 2))
+        
+        # Command: SET_CONSIGNE [room] [temp] [start_date] [end_date] 
+        elif r[0] == "SET_CONSIGNE":
+             room = r[1]
+             temp = r[2]
+             start = r[3]
+             end = r[4]
+             self.myHouse.setConsigne(room, round(temp, 2), start, end)
 
         # Command: SET_MODE [room] [value]
         elif r[0] == "SET_MODE":
@@ -81,13 +90,13 @@ tcpsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 tcpsock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 tcpsock.bind(("", 1111))
 
-i2c_helper = ABEHelpers()
-bus = i2c_helper.get_smbus()
-adc = ADCPi(bus, 0x6d, 0x6e, 12)
+#i2c_helper = ABEHelpers()
+#bus = i2c_helper.get_smbus()
+#adc = ADCPi(bus, 0x6c, 0x6d, 12)
 
 while True:
     tcpsock.listen(10)
     print("En écoute...")
     (clientsocket, (ip, port)) = tcpsock.accept()
-    newthread = ClientThread(ip, port, clientsocket, adc)
+    newthread = ClientThread(ip, port, clientsocket, None) #adc)
     newthread.start()

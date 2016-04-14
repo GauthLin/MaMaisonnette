@@ -99,16 +99,15 @@ class MyHouse:
         return self.defaultTemp[room]
 
     # Sauvegarde une consigne
-    def setOrder(self, room, temp, start_timestamp, end_timestamp):
+    def setConsigne(self, room, temp, start_timestamp, end_timestamp):
         start_datetime = datetime.datetime.fromtimestamp(start_timestamp)
         end_datetime = datetime.datetime.fromtimestamp(end_timestamp)
         request_temp = self.requestTemp[room]
         request_temp[0] = temp
         request_temp[1] = start_datetime
         request_temp[2] = end_datetime
-
         self.db.executeUpdate(
-            'INSERT INTO consigne(temp, start_order, end_order, room) VALUES (' + temp + ', ' + start_datetime + ', ' + end_datetime + ', ' + room + ')')
+            'INSERT INTO `consigne` (`temp`, `start_order`, `end_order`, `room`) VALUES (%s,%s,%s,%s)', (str(temp), str(start_datetime), str(end_datetime), room))
 
     def setMode(self, room, status):
         self.currentMode[room] = status
