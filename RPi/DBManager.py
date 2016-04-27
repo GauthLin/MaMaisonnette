@@ -18,5 +18,6 @@ class DBManager:
         self.connection.commit()
         cursor.close()
         self.connection.close()
-    def executeQuery(self, sql):
-        pass
+
+    def getConnection(self):
+        return self.connection
