@@ -4,6 +4,7 @@ import datetime
 
 import param
 from DBManager import *
+from I2CManager import *
 
 import socket
 import RPi.GPIO as GPIO
@@ -37,7 +38,7 @@ class MyHouse:
         self.setup_gpio(param.GPIO)
 
         self.db = DBManager()
-
+        self.i2c = I2CManager()
     # GPIO configuration
     def setup_gpio(self, array):
         GPIO.setmode(GPIO.BCM)
@@ -78,14 +79,14 @@ class MyHouse:
         GPIO.output(param.GPIO['Lamp'][1], status)
 
     # Retourne la temperature d'une pièce
-    def getTemp(self, adc, name):
+    def getTemp(self, name):
         list_room = {
             'A': 1,
             'B': 2,
             'C': 3,
             'D': 4
         }
-        temp = round(adc.read_voltage(list_room[name]) / .01, 2)
+        temp = round(i2c.read()) #/ .01, 2)
         return temp
 
     # Sauvegarde la température par défault de la pièce
@@ -138,7 +139,7 @@ class MyHouse:
         return GPIO.input(param.GPIO['Sensors']['Doors'][name][1])
 
     # Régule la maison
-    def regulate(self, adc):
+    def regulate(self):
         date = datetime.datetime.today()  # Contient la date du jour
         requestTempA = self.getRequestTemp('A', date)
         requestTempB = self.getRequestTemp('B', date)
