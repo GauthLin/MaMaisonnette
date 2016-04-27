@@ -2,8 +2,8 @@
 <project version="4">
   <component name="WebServers">
     <option name="servers">
-      <webServer id="eae3f240-a0cb-42bf-a6cf-df00f91c0c4a" name="RPi - Domotique" url="http://172.17.10.87">
-        <fileTransfer host="172.17.10.87" port="22" rootFolder="/home/pi/MaMaisonnette" accessType="SFTP" password="dfd8dfcbdfd9dfdadfc8dfcfdfd8dfd8dfd3" username="pi">
+      <webServer id="eae3f240-a0cb-42bf-a6cf-df00f91c0c4a" name="RPi - Domotique" url="http://172.17.10.81">
+        <fileTransfer host="172.17.10.81" port="22" rootFolder="/home/pi" accessType="SFTP" password="dfd8dfcbdfd9dfdadfc8dfcfdfd8dfd8dfd3" username="pi">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" />
           </advancedOptions>

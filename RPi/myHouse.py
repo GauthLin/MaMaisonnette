@@ -98,6 +98,19 @@ class MyHouse:
     def getDefaultTemp(self, room):
         return self.defaultTemp[room]
 
+    # Permet de récupérer la température pour la chambre et la date donnée
+    def getRequestTemp(self, room, date):
+        connection = self.db.getConnection()
+        cursor = connection.cursor()
+
+        cursor.execute('SELECT `temp` FROM `consigne` WHERE `room` = %s AND `end_order` < %s',
+                       (str(room), str(date)))
+        result = cursor.fetchone()
+        requestTemp = result['temp']
+        cursor.close()
+
+        return requestTemp
+
     # Sauvegarde une consigne
     def setConsigne(self, room, temp, start_timestamp, end_timestamp):
         start_datetime = datetime.datetime.fromtimestamp(start_timestamp)
@@ -107,7 +120,9 @@ class MyHouse:
         request_temp[1] = start_datetime
         request_temp[2] = end_datetime
         self.db.executeUpdate(
-            'INSERT INTO `consigne` (`temp`, `start_order`, `end_order`, `room`) VALUES (%s,%s,%s,%s)', (str(temp), str(start_datetime), str(end_datetime), room))
+            'INSERT INTO `consigne` (`temp`, `start_order`, `end_order`, `room`) VALUES (%s,%s,%s,%s)',
+            (str(temp), str(start_datetime), str(end_datetime), room)
+        )
 
     def setMode(self, room, status):
         self.currentMode[room] = status
@@ -119,3 +134,8 @@ class MyHouse:
     # Retourne True ou False si porte Ferme ou Ouvert
     def getDoor(self, name):
         return GPIO.input(param.GPIO['Sensors']['Doors'][name][1])
+
+    # Régule la maison
+    def regulate(self):
+        date = datetime.datetime.today()  # Contient la date du jour
+
