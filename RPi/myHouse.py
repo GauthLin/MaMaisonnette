@@ -4,7 +4,6 @@ import datetime
 
 import param
 from DBManager import *
-from I2CManager import *
 
 import socket
 import RPi.GPIO as GPIO
@@ -38,7 +37,8 @@ class MyHouse:
         self.setup_gpio(param.GPIO)
 
         self.db = DBManager()
-        self.i2c = I2CManager()
+        #self.i2c = I2CManager()
+
     # GPIO configuration
     def setup_gpio(self, array):
         GPIO.setmode(GPIO.BCM)
@@ -86,7 +86,7 @@ class MyHouse:
             'C': 3,
             'D': 4
         }
-        temp = round(i2c.read()) #/ .01, 2)
+        temp = 18 #/ .01, 2)
         return temp
 
     # Sauvegarde la température par défault de la pièce
@@ -101,16 +101,17 @@ class MyHouse:
 
     # Permet de récupérer la température pour la chambre à la date donnée
     def getRequestTemp(self, room, date):
-        connection = self.db.getConnection()
-        cursor = connection.cursor()
+        # TODO: base de données
+        #connection = self.db.getConnection()
+        #cursor = connection.cursor()
 
-        cursor.execute('SELECT `temp` FROM `consigne` WHERE `room` = %s AND `end_order` < %s',
-                       (str(room), str(date)))
-        result = cursor.fetchone()
-        requestTemp = result['temp']
-        print('Request temp :', requestTemp)
-        cursor.close()
-        connection.close()
+        #cursor.execute('SELECT `temp` FROM `consigne` WHERE `room` = %s AND `end_order` < %s',
+        #              (str(room), str(date)))
+        #result = cursor.fetchone()
+        requestTemp = 20
+        #print('Request temp :', requestTemp)
+        #cursor.close()
+        #connection.close()
 
         return requestTemp
 
@@ -132,11 +133,11 @@ class MyHouse:
 
     # Retourne True ou False si fenetre Ferme ou Ouvert
     def getWindow(self, name):
-        return GPIO.input(param.GPIO['Sensors']['Windows'][name][1])
+        return GPIO.input(param.GPIO['Windows'][name][1])
 
     # Retourne True ou False si porte Ferme ou Ouvert
     def getDoor(self, name):
-        return GPIO.input(param.GPIO['Sensors']['Doors'][name][1])
+        return GPIO.input(param.GPIO['Doors'][name][1])
 
     # Régule la maison
     def regulate(self):
@@ -145,12 +146,12 @@ class MyHouse:
         requestTempB = self.getRequestTemp('B', date)
         requestTempC = self.getRequestTemp('C', date)
 
-        if self.getTemp('A') > requestTempA or self.getWindow('A'):
-            self.heat('A', False)
+        if self.getTemp('D') > requestTempA or self.getWindow('D'):
+            self.heat('D', False)
         else:
-            self.heat('A', True)
+            self.heat('D', True)
 
-        if self.getTemp('B') > requestTempB or self.getWindow('B'):
+        if self.getTemp('B') > requestTempB or self.getWindow('BD'):
             self.heat('B', False)
         else:
             self.heat('B', True)

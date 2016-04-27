@@ -19,7 +19,7 @@ class I2CManager:
         self.address = 0x08
         self.bus = i2c.I2CMaster()
 
-    def read(self, howMany):
+    def read(self):
         """
         Permet d'aller lire sur l'Arduino
 
@@ -30,7 +30,7 @@ class I2CManager:
             data: informations de la communication
         """
         print("Reading a l adresse %i" % self.address)
-        data = self.bus.transaction(i2c.reading(self.address, howMany))
+        data = self.bus.transaction(i2c.reading(self.address, 8))
         print(data)
         return unpack(data)
 

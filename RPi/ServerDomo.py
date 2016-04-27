@@ -3,11 +3,10 @@
 
 import socket
 import threading
+import multiprocessing
 
 import param
 from myHouse import *
-from ADCPi.ABE_ADCPi import ADCPi
-from ADCPi.ABE_helpers import ABEHelpers
 
 
 class ClientThread(threading.Thread):
@@ -84,12 +83,12 @@ class ClientThread(threading.Thread):
         # print("Commander le chauffage: %s", nameHeating, " Status : %s", status)
         print("Client déconnecté...")
 
-class RegulateThread(threading.Thread):
-    def __init__(self, myHouse):
-        threading.Thread.__init__(self)
-        self.myHouse = myHouse
-       #self.adc = adc
-
+def regulate(myHouse):
+    print("regulate")
+    #self.myHouse = myHouse
+    #self.adc = adc
+    while True:
+        myHouse.regulate()
 
 
 if __name__ == '__main__':
@@ -98,6 +97,8 @@ if __name__ == '__main__':
     tcpsock.bind(("", 1111))
 
     myHouse = MyHouse()
+    p = multiprocessing.Process(name="running", target=regulate, args=(myHouse,))
+    p.start()
 
     #i2c_helper = ABEHelpers()
     #bus = i2c_helper.get_smbus()
@@ -109,6 +110,4 @@ if __name__ == '__main__':
         print("En écoute...")
         (clientsocket, (ip, port)) = tcpsock.accept()
         newthread = ClientThread(ip, port, clientsocket, myHouse) #adc)
-        newthreadR = RegulateThread(myHouse)
         newthread.start()
-        newthreadR.start()
