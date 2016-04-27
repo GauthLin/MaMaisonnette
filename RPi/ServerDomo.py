@@ -84,6 +84,13 @@ class ClientThread(threading.Thread):
         # print("Commander le chauffage: %s", nameHeating, " Status : %s", status)
         print("Client déconnecté...")
 
+class RegulateThread(threading.Thread):
+    def __init__(self, myHouse):
+        threading.Thread.__init__(self)
+        self.myHouse = myHouse
+       #self.adc = adc
+
+
 
 if __name__ == '__main__':
     tcpsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -95,10 +102,13 @@ if __name__ == '__main__':
     #i2c_helper = ABEHelpers()
     #bus = i2c_helper.get_smbus()
     #adc = ADCPi(bus, 0x6c, 0x6d, 12)
+    #adc = None
 
     while True:
         tcpsock.listen(10)
         print("En écoute...")
         (clientsocket, (ip, port)) = tcpsock.accept()
         newthread = ClientThread(ip, port, clientsocket, myHouse) #adc)
+        newthreadR = RegulateThread(myHouse)
         newthread.start()
+        newthreadR.start()

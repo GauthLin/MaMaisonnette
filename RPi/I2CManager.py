@@ -7,8 +7,8 @@
 from struct import unpack
 
 import quick2wire.i2c as i2c
-import param
-from debug import *
+#import param
+#from debug import *
 
 
 class I2CManager:
@@ -45,6 +45,9 @@ class I2CManager:
         Returns:
             Array: tableau contenant la valeur des roues codeuses
         """
-        d = unpack('BBBB', data[0])
-        temp = int.from_bytes([d[0], d[1], d[2], d[3]], byteorder='big', signed=False)
-        return [RCDroit, RCGauche]
+        d = unpack('BBBBBBBB', data[0])
+        tempA = int.from_bytes([d[0], d[1]], byteorder='big', signed=False)
+        tempB = int.from_bytes([d[2], d[3]], byteorder='big', signed=False)
+        tempC = int.from_bytes([d[4], d[5]], byteorder='big', signed=False)
+        tempD = int.from_bytes([d[6], d[6]], byteorder='big', signed=False)
+        return [tempA, tempB, tempC, tempD, RCDroit, RCGauche]
