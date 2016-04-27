@@ -98,7 +98,7 @@ class MyHouse:
     def getDefaultTemp(self, room):
         return self.defaultTemp[room]
 
-    # Permet de récupérer la température pour la chambre et la date donnée
+    # Permet de récupérer la température pour la chambre à la date donnée
     def getRequestTemp(self, room, date):
         connection = self.db.getConnection()
         cursor = connection.cursor()
@@ -107,7 +107,9 @@ class MyHouse:
                        (str(room), str(date)))
         result = cursor.fetchone()
         requestTemp = result['temp']
+        print('Request temp :', requestTemp)
         cursor.close()
+        connection.close()
 
         return requestTemp
 
@@ -136,6 +138,24 @@ class MyHouse:
         return GPIO.input(param.GPIO['Sensors']['Doors'][name][1])
 
     # Régule la maison
-    def regulate(self):
+    def regulate(self, adc):
         date = datetime.datetime.today()  # Contient la date du jour
+        requestTempA = self.getRequestTemp('A', date)
+        requestTempB = self.getRequestTemp('B', date)
+        requestTempC = self.getRequestTemp('C', date)
+
+        if self.getTemp('A') > requestTempA or self.getWindow('A'):
+            self.heat('A', False)
+        else:
+            self.heat('A', True)
+
+        if self.getTemp('B') > requestTempB or self.getWindow('B'):
+            self.heat('B', False)
+        else:
+            self.heat('B', True)
+
+        if self.getTemp('C') > requestTempC or self.getWindow('C'):
+            self.heat('C', False)
+        else:
+            self.heat('C', True)
 
