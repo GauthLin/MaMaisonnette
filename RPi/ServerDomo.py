@@ -4,6 +4,7 @@
 import socket
 import threading
 import multiprocessing
+import time
 
 import param
 from myHouse import *
@@ -20,8 +21,6 @@ class ClientThread(threading.Thread):
         self.myHouse = myHouse
 
         print("[+] Nouveau thread pour %s %s" % (self.ip, self.port,))
-
-    # self.start()
 
     # Fonction principale
     def run(self):
@@ -41,12 +40,14 @@ class ClientThread(threading.Thread):
 
         # Command: SET_TEMP [room] [value]
         elif r[0] == "SET_TEMP":
+            print('SET_TEMP')
             room = r[1]
             value = r[2]  
             self.myHouse.setDefaultTemp(room, round(value, 2))
         
         # Command: SET_CONSIGNE [room] [temp] [start_date] [end_date] 
         elif r[0] == "SET_CONSIGNE":
+             print('SET_CONSIGNE')
              room = r[1]
              temp = r[2]
              start = r[3]
@@ -55,12 +56,14 @@ class ClientThread(threading.Thread):
 
         # Command: SET_MODE [room] [value]
         elif r[0] == "SET_MODE":
+            print('SET_MODE')
             room = r[1]
             value = r[2]
             self.myHouse.setMode(room, value)
 
         # Command: GET_WINDOW [room]
         elif r[0] == "GET_WINDOW":
+            print('GET_WINDOW')
             room = r[1]
             msg = self.myHouse.getWindow(param.GPIO['Windows'][room])
             self.clientsocket.send(bytes(str(msg), 'UTF-8'))
@@ -68,6 +71,7 @@ class ClientThread(threading.Thread):
 
         # Command: GET_DOOR [room]
         elif r[0] == "GET_DOOR":
+            print('GET_DOOR')
             room = r[1]
             msg = self.myHouse.getDoor(param.GPIO['Doors'][room])
             self.clientsocket.send(bytes(str(msg), 'UTF-8'))
@@ -75,6 +79,7 @@ class ClientThread(threading.Thread):
 
         # Command: GET_TEMP [room]
         elif r[0] == "GET_TEMP":
+            print('GET_TEMP')
             room = r[1]
             # temp = self.myHouse.getTemp(self.adc, param.GPIO['Temp'][room])
             self.clientsocket.send(bytes(str(18), 'UTF-8'))
@@ -85,10 +90,10 @@ class ClientThread(threading.Thread):
 
 def regulate(myHouse):
     print("regulate")
-    #self.myHouse = myHouse
-    #self.adc = adc
+    
     while True:
         myHouse.regulate()
+        time.sleep(2)
 
 
 if __name__ == '__main__':
