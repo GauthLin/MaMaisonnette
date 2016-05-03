@@ -1,0 +1,151 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+import param
+from DBManager import *
+
+import time
+import socket
+import RPi.GPIO as GPIO
+
+
+class MyHouse:
+    # Constructeur
+    def __init__(self):
+        # Mode actuel dans les différentes pièces
+        self.currentMode = {
+            'A': 'AUTO',
+            'B': 'AUTO',
+            'C': 'AUTO'
+        }
+
+        # Température par défaut des différentes pièces
+        self.defaultTemp = {
+            'A': 18,
+            'B': 18,
+            'C': 18
+        }
+
+        self.setup_gpio(param.GPIO)
+
+        self.db = DBManager()
+        #self.i2c = I2CManager()
+
+    # GPIO configuration
+    def setup_gpio(self, array):
+        GPIO.setmode(GPIO.BCM)
+
+        # v[0] contains the key
+        # v[1] contains the value
+        for v in array.items():
+            if isinstance(v[1], dict):
+                self.setup_gpio(v[1])
+            else:
+                if v[1][0].upper() == "IN":
+                    GPIO.setup(v[1][1], GPIO.IN)
+                else:
+                    GPIO.setup(v[1][1], GPIO.OUT)
+
+    # Test si la connexion est activee
+    # Retourne True si internet est activee
+    # Retourne False si non
+    def isInternetOn(self):
+        try:
+            host = socket.gethostbyname("www.google.com")
+            s = socket.create_connection((host, 80), 2)
+            return True
+        except:
+            pass
+        return False
+
+    # Allume ou eteint le chauffage
+    # room : nom du chauffage
+    # status : True ou False
+    def heat(self, room, status):
+        GPIO.setup(param.GPIO['Heating']['B'][1], GPIO.OUT)
+        GPIO.output(param.GPIO['Heating'][room][1], status)
+
+    # Allume ou eteint la lampe
+    # status : True ou False
+    def setLamp(self, status):
+        GPIO.output(param.GPIO['Lamp'][1], status)
+
+    # Retourne la temperature d'une pièce
+    def getTemp(self, name):
+        list_room = {
+            'A': 1,
+            'B': 2,
+            'C': 3,
+            'D': 4
+        }
+        temp = 18  # Normalement devrait utiliser l'adc mais fonctionne pas ;(
+        return temp
+
+    # Sauvegarde la température par défault de la pièce
+    def setDefaultTemp(self, room, temp):
+        self.defaultTemp[room] = temp
+
+        self.db.executeUpdate('UPDATE temp_default SET temp_default = ' + temp + ' WHERE room=' + room)
+
+    # Récupère la température par défaut d'une pièce
+    def getDefaultTemp(self, room):
+        return self.defaultTemp[room]
+
+    # Permet de récupérer la température pour la chambre à la date donnée
+    def getRequestTemp(self, room, date):
+        connection = self.db.getConnection()
+        cursor = connection.cursor()
+        cursor.execute('SELECT temp FROM consigne WHERE room = %s AND start_order < %s AND end_order > %s',
+                     (str(room), str(date), str(date)))
+        result = cursor.fetchone()
+        if result:
+            requestTemp = result[0]
+        else:
+            requestTemp = self.defaultTemp[room]
+        
+        print('Request temp :', requestTemp, 'in room', room)
+        cursor.close()
+
+        return requestTemp
+
+    # Sauvegarde une consigne
+    def setConsigne(self, room, temp, start_timestamp, end_timestamp):
+        self.db.executeUpdate(
+            'INSERT INTO `consigne` (`temp`, `start_order`, `end_order`, `room`) VALUES (%s,%s,%s,%s)',
+            (str(temp), str(start_timestamp), str(end_timestamp), room)
+        )
+
+    def setMode(self, room, status):
+        self.currentMode[room] = status
+
+    # Retourne True ou False si fenetre Ferme ou Ouvert
+    def getWindow(self, name):
+        return GPIO.input(param.GPIO['Windows'][name][1])
+
+    # Retourne True ou False si porte Ferme ou Ouvert
+    def getDoor(self, name):
+        return GPIO.input(param.GPIO['Doors'][name][1])
+
+    # Régule la maison
+    def regulate(self):
+        date = int(time.time())  # Contient la date du jour
+        print(date)
+        requestTempA = self.getRequestTemp('A', date)
+        requestTempB = self.getRequestTemp('B', date)
+        requestTempC = self.getRequestTemp('C', date)
+
+        if self.getTemp('D') > requestTempA or self.getWindow('D'):
+            self.heat('D', False)
+        else:
+            self.heat('D', True)
+
+        if self.getTemp('B') > requestTempB or self.getWindow('BD'):
+            self.heat('B', False)
+        else:
+            self.heat('B', True)
+
+        if self.getTemp('C') > requestTempC or self.getWindow('C'):
+            self.heat('C', False)
+        else:
+            self.heat('C', True)
+
