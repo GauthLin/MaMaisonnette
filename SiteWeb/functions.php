@@ -9,11 +9,11 @@ function sendCommandToRPi($command) {
 	}
 
 	//Connect socket to remote server
-	if(!socket_connect($sock , '172.17.10.81' , 1111))
+	if(!socket_connect($sock , '172.17.10.52' , 1111))
 	{
 	    $errorcode = socket_last_error();
 	    $errormsg = socket_strerror($errorcode);
-
+		echo $errormsg;
 	    return(False);
 	}
 
@@ -40,7 +40,7 @@ function getinfoToRPi($command) {
 	}
 
 	//Connect socket to remote server
-	if(!socket_connect($sock , '172.17.10.81' , 1111))
+	if(!socket_connect($sock , '172.17.10.52' , 1111))
 	{
 	    $errorcode = socket_last_error();
 	    $errormsg = socket_strerror($errorcode);

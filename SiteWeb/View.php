@@ -34,7 +34,7 @@
                     <img class="Chambre2" src="Images/chambre_2.jpg" alt="Chambre 2"/>
                 </a>
                 <p>
-                    <?php echo "Chambre2"; ?>
+                    <?php echo "&nbsp; Salon"; ?>
                 </p>
             </div>
         </div>
@@ -46,7 +46,7 @@
                     <img class="Salon" src="Images/salon.jpg" alt="Salon"/>
                 </a>
                 <p>
-                    <?php echo "&nbsp; &nbsp; Salon"; ?>
+                    <?php echo "&nbsp;  Chambre2"; ?>
                 </p>
             </div>
         </div>

@@ -15,13 +15,10 @@
 		$ID_CHB = 1;
 		
 		if(IsSet($_POST['setTemp'])) {
-			
-			echo $ID_CHB;
-
 
 			if ($ID_CHB == 1)
 			{
-				sendCommandToRPi('SET_TEMP A '.$_POST['setTemp']);
+				sendCommandToRPi('SET_TEMP D '.$_POST['setTemp']);
 			}
 			if ($ID_CHB == 2)
 			{
