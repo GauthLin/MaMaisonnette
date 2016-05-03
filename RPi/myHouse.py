@@ -16,14 +16,16 @@ class MyHouse:
         self.currentMode = {
             'A': 'AUTO',
             'B': 'AUTO',
-            'C': 'AUTO'
+            'C': 'AUTO',
+            'D': 'AUTO'
         }
 
         # Température par défaut des différentes pièces
         self.defaultTemp = {
             'A': 18,
             'B': 18,
-            'C': 18
+            'C': 18,
+            'D': 18
         }
 
         self.setup_gpio(param.GPIO)
@@ -62,7 +64,6 @@ class MyHouse:
     # room : nom du chauffage
     # status : True ou False
     def heat(self, room, status):
-        GPIO.setup(param.GPIO['Heating']['B'][1], GPIO.OUT)
         GPIO.output(param.GPIO['Heating'][room][1], status)
 
     # Allume ou eteint la lampe
@@ -85,11 +86,22 @@ class MyHouse:
     def setDefaultTemp(self, room, temp):
         self.defaultTemp[room] = temp
 
-        self.db.executeUpdate('UPDATE temp_default SET temp_default = ' + temp + ' WHERE room=' + room)
+        connection = self.db.getConnection()
+        cursor = connection.cursor()
+        cursor.execute('UPDATE temp_default SET temp_default = %s  WHERE room= %s',
+                       (temp, room))
+        cursor.close()
 
     # Récupère la température par défaut d'une pièce
     def getDefaultTemp(self, room):
-        return self.defaultTemp[room]
+        connection = self.db.getConnection()
+        cursor = connection.cursor()
+        cursor.execute('SELECT temp_default FROM temp_default WHERE room = %s',(str(room)))
+        result = cursor.fetchone()
+        requestTemp = result[0]
+        cursor.close()
+
+        return requestTemp
 
     # Permet de récupérer la température pour la chambre à la date donnée
     def getRequestTemp(self, room, date):
@@ -99,10 +111,16 @@ class MyHouse:
                      (str(room), str(date), str(date)))
         result = cursor.fetchone()
         if result:
-            requestTemp = result[0]
-        else:
-            requestTemp = self.defaultTemp[room]
-        
+            temp = result[0]
+            cursor.close()
+            return temp
+
+        connection = self.db.getConnection()
+        cursor = connection.cursor()
+        cursor.execute('SELECT temp_default FROM temp_default WHERE room = %s',(str(room)))
+        result = cursor.fetchone()
+        requestTemp = result[0]
+               
         print('Request temp :', requestTemp, 'in room', room)
         cursor.close()
 
@@ -129,10 +147,10 @@ class MyHouse:
     # Régule la maison
     def regulate(self):
         date = int(time.time())  # Contient la date du jour
-        print(date)
         requestTempA = self.getRequestTemp('A', date)
         requestTempB = self.getRequestTemp('B', date)
         requestTempC = self.getRequestTemp('C', date)
+        requestTempD = self.getRequestTemp('D', date)
 
         if self.getTemp('D') > requestTempA or self.getWindow('D'):
             self.heat('D', False)

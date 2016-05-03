@@ -42,8 +42,9 @@ class ClientThread(threading.Thread):
         elif r[0] == "SET_TEMP":
             print('SET_TEMP')
             room = r[1]
-            value = r[2]  
-            self.myHouse.setDefaultTemp(room, round(value, 2))
+            value = r[2]
+            print(value)  
+            self.myHouse.setDefaultTemp(room, value)
         
         # Command: SET_CONSIGNE [room] [temp] [start_date] [end_date] 
         elif r[0] == "SET_CONSIGNE":
@@ -65,7 +66,7 @@ class ClientThread(threading.Thread):
         elif r[0] == "GET_WINDOW":
             print('GET_WINDOW')
             room = r[1]
-            msg = self.myHouse.getWindow(param.GPIO['Windows'][room])
+            msg = self.myHouse.getWindow(room)
             self.clientsocket.send(bytes(str(msg), 'UTF-8'))
             self.clientsocket.close()
 
@@ -83,6 +84,14 @@ class ClientThread(threading.Thread):
             room = r[1]
             # temp = self.myHouse.getTemp(self.adc, param.GPIO['Temp'][room])
             self.clientsocket.send(bytes(str(18), 'UTF-8'))
+            self.clientsocket.close()
+
+        # Command: GET_DEFAULT_TEMP [room]
+        elif r[0] == "GET_DEFAULT_TEMP":
+            print('GET_DEFAULT_TEMP')
+            room = r[1]
+            # temp = self.myHouse.getTemp(self.adc, param.GPIO['Temp'][room])
+            self.clientsocket.send(bytes(str(self.myHouse.getDefaultTemp(room)), 'UTF-8'))
             self.clientsocket.close()
 
         # print("Commander le chauffage: %s", nameHeating, " Status : %s", status)
