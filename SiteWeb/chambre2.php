@@ -7,13 +7,36 @@
     </head>
     <body>
 
-        <?php 	include("header.php");
-				include("functions.php");
-			$ID_CHB = 2; 
-
+    
+        <?php 
+		include ("functions.php");		
+		$ID_CHB = 2;
+		
+		if(IsSet($_POST['setTemp'])) {
 			
+			echo $ID_CHB;
+
+
+			if ($ID_CHB == 1)
+			{
+				sendCommandToRPi('SET_TEMP A '.$_POST['setTemp']);
+			}
+			if ($ID_CHB == 2)
+			{
+				sendCommandToRPi('SET_TEMP B '.$_POST['setTemp']);
+			}
+			if ($ID_CHB == 3)
+			{
+				sendCommandToRPi('SET_TEMP C '.$_POST['setTemp']);
+			}
+		}
+        ?>
+				
+
+
+	<!--		
 		// fonction d'envoie des températures ...
-/*		if (isset ($_POST ["temp_chamb1"])){
+		if (isset ($_POST ["temp_chamb1"])){
 
 			$temp_2 = $_POST ["temp_chamb2"];
 			
@@ -26,8 +49,8 @@
 		}*/
 		// reception des température de la maison
 
-		$temp_2_RPI= getinfoToRPi("GET_TEMP B");
-			$temp_2_RPI= 15;
+		//
+			//$temp_2_RPI= 15;
 		
 		// reception des fenetre et porte de la maison 
 		
@@ -72,13 +95,14 @@
 		}
 		}
 		*/?>
-		
-	
-		<!-- BENJA -->
-        <?php include("header.php"); ?>
+		-->
+
+        <?php include("header.php");?> <!--En-tête-->
+        
 
         <p class="Controler">
             <?php echo "Contrôle de la chambre d'amis"; ?>
         </p>
 
-        <?php include("controler.php"); ?>
+        <?php include("controler.php");?> <!--Zones de texte et boutons-->
+        

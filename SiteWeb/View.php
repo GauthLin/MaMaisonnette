@@ -1,3 +1,5 @@
+<!--Page d'accueil-->
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -6,12 +8,14 @@
         <link rel="stylesheet" href="style.css" />
     </head>
     <body>
-        <?php include("header.php"); ?>
+        <?php include("header.php"); //En-tête
+        ?> 
 
         <p class="FirstQuestion">
             <?php echo "Quelle pièce voulez-vous contrôler ?"; ?>
         </p>
 
+        <!--Image cliquable de la chambre n°1-->
         <div class="Piece">
             <div class="piece-info">
                 <a href="chambre1.php">
@@ -23,6 +27,7 @@
             </div>
         </div>
 
+        <!--Image cliquable de la chambre n°2-->
         <div class=Piece>
             <div class="piece-info">
                 <a href="chambre2.php">
@@ -34,9 +39,10 @@
             </div>
         </div>
 
+        <!--Image cliquable du salon-->
         <div class=Piece>
             <div class="piece-info">
-                <a href="salon.php">
+                <a href="chambre3.php">
                     <img class="Salon" src="Images/salon.jpg" alt="Salon"/>
                 </a>
                 <p>
@@ -45,6 +51,7 @@
             </div>
         </div>
 
+        <!--Image cliquable de l'ensemble de la maison-->
         <div class=Piece>
             <div class="piece-info">
                 <a href="maison.php">

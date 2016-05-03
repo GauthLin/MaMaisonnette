@@ -1,3 +1,5 @@
+<!--Gestion des pièces dans leur globalité-->
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -14,3 +16,4 @@
         </p>
 
         <?php include("controler.php"); ?>
+        
