@@ -1,3 +1,4 @@
+﻿ <meta charset="utf-8" />
 <?php
 function sendCommandToRPi($command) {
 	if(!($sock = socket_create(AF_INET, SOCK_STREAM, 0)))
@@ -9,16 +10,19 @@ function sendCommandToRPi($command) {
 	}
 
 	//Connect socket to remote server
-	if(!socket_connect($sock , '172.17.10.52' , 1111))
-	{
-	    $errorcode = socket_last_error();
-	    $errormsg = socket_strerror($errorcode);
-		echo $errormsg;
-	    return(False);
+	try {
+		if(!socket_connect($sock , '172.17.10.71' , 1111))
+		{
+			$errorcode = socket_last_error();
+			$errormsg = socket_strerror($errorcode);
+			echo $errormsg;
+			return(False);
+		}
+	}	catch (Exception $e) {
 	}
 
 	//Send the message to the server
-	if( ! socket_send ( $sock , $command , strlen($command) , 0))
+	if(!socket_send($sock , $command , strlen($command) , 0))
 	{
 	    $errorcode = socket_last_error();
 	    $errormsg = socket_strerror($errorcode);
@@ -40,13 +44,18 @@ function getinfoToRPi($command) {
 	}
 
 	//Connect socket to remote server
-	if(!socket_connect($sock , '172.17.10.52' , 1111))
-	{
-	    $errorcode = socket_last_error();
-	    $errormsg = socket_strerror($errorcode);
-
-	    return(False);
+	try {
+		$varConnection = socket_connect($sock , '172.17.10.71' , 1111);
+	}	catch (Exception $e) {
+		var_dump($e);
 	}
+		if(!$varConnection)
+		{
+			$errorcode = socket_last_error();
+			$errormsg = socket_strerror($errorcode);
+	
+			return(False);
+		}
 
 	//Send the message to the server
 	if( ! socket_write ( $sock , $command , strlen($command)))

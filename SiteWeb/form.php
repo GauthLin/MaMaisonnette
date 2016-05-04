@@ -1,5 +1,5 @@
 <?php
-	/*include ("functions.php");
+	include ("functions.php");
 	function Btn(){
 
 	if ($ID_CHB == 1)
@@ -14,5 +14,5 @@
 		{
 			sendCommandToRPi('SET_TEMP C '.$_POST['setTemp']);
 		}
-	}*/
+	}
 	?>

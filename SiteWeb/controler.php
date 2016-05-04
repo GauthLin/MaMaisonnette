@@ -49,14 +49,13 @@
  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js" type="text/javascript"></script>
 
  
- 	 <form action="chambre<?php echo $ID_CHB; ?>.php" method="post">
+ 	<form action="chambre<?php echo $ID_CHB; ?>.php" method="post">
 		<p class="Value">
 
-			<?php echo "T° : "; ?>	  <input type="text" name="setTempVoulue">
-			<?php echo "Du : "; ?>    <input type="text" name="datepicker">
-			<?php echo "Au : "; ?>    <input type="text" name="datepicker2">
-			<input type="submit" name="Bouton" value="Appliquer" class="Btn" onclick ="Btn()"/>
-
+			<?php echo "T° : "; ?>	  <input type="text" id="setTempVoulue" name="setTempVoulue">
+			<?php echo "Du : "; ?>    <input type="text" id="datepicker" name="datepicker">
+			<?php echo "Au : "; ?>    <input type="text" id="datepicker2" name="datepicker2">
+			<input type="submit" name="Bouton" value="Appliquer" class="Btn"/>
 		</p>
 	 </form>
 
@@ -66,7 +65,7 @@
    $(function() {
    	$("#datepicker" ).datepicker({
         beforeShowDay: function(date){
-          var b = (date.getDay() < 5);
+          var b = (date.getDay() < 7);
           var c = b ? "": "ui-state-disabled";
           return [b, c];
         }
@@ -74,7 +73,7 @@
 
    	$("#datepicker2" ).datepicker({
         beforeShowDay: function(date){
-          var b = (date.getDay() < 5);
+          var b = (date.getDay() < 7);
           var c = b ? "": "ui-state-disabled";
           return [b, c];
         }
@@ -94,7 +93,7 @@
 			 if ($ID_CHB == 3)	
 				echo 'T° :  <input  type="number" id="getTemp"; value= "'.$temp_3_Default.'" name ="setTemp">';
 			?>
-			<input type="submit" name="Bouton" value="Appliquer" class="Btn" onclick ="Btn()"/>
+			<input type="submit" name="Bouton" value="Appliquer" class="Btn" />
 		</p>
 	</form>
 
